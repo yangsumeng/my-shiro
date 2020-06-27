@@ -1,4 +1,4 @@
-package com.yangsm.demo.myshiro.config;
+package com.yangsm.demo.myshiro.auth;
 
 import com.yangsm.demo.myshiro.entity.Permission;
 import com.yangsm.demo.myshiro.entity.Role;
@@ -22,6 +22,9 @@ public class MyShiroRealm extends AuthorizingRealm {
      * */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+
+        System.out.println("==========================Realm doGetAuthenticationInfo 身份认证");
+
         //获取用户输入的账号
         String userName = (String) token.getPrincipal();
         //通过username从数据库中查找 User对象.
@@ -36,6 +39,7 @@ public class MyShiroRealm extends AuthorizingRealm {
                 ByteSource.Util.bytes(user.getCredentialsSalt()),//salt=username+salt
                 getName()//realm name
         );
+
         return authenticationInfo;
     }
 
@@ -44,6 +48,9 @@ public class MyShiroRealm extends AuthorizingRealm {
      * */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
+        System.out.println("==========================Realm doGetAuthorizationInfo 权限信息");
+
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //如果身份认证的时候没有传入User对象，这里只能取到userName
         //也就是SimpleAuthenticationInfo构造的时候第一个参数传递需要User对象
@@ -56,6 +63,10 @@ public class MyShiroRealm extends AuthorizingRealm {
                 authorizationInfo.addStringPermission(p.getPermission());
             }
         }
+
+        //测试增加 Button权限
+        authorizationInfo.addStringPermission("deleteall");
+
         return authorizationInfo;
     }
 

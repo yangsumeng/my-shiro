@@ -28,4 +28,11 @@ public class UserController {
     public String userDel(){
         return "userDel";
     }
+
+    //用户删除
+    @GetMapping("/deleteall")
+    @RequiresPermissions("deleteall")//权限管理;
+    public String deleteall(){
+        return "deleteall";
+    }
 }

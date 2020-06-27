@@ -1,5 +1,6 @@
 package com.yangsm.demo.myshiro.config;
 
+import com.yangsm.demo.myshiro.auth.MyShiroRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -17,6 +18,8 @@ public class ShiroConfig {
     //将自己的验证方式加入容器
     @Bean
     MyShiroRealm myShiroRealm() {
+        System.out.println("==========================init myShiroRealm");
+
         MyShiroRealm myShiroRealm = new MyShiroRealm();
         myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return myShiroRealm;
@@ -25,6 +28,9 @@ public class ShiroConfig {
     //权限管理，配置主要是Realm的管理认证
     @Bean
     DefaultWebSecurityManager securityManager() {
+
+        System.out.println("==========================init securityManager");
+
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         manager.setRealm(myShiroRealm());
         return manager;
@@ -33,15 +39,25 @@ public class ShiroConfig {
     //凭证匹配器（密码校验交给Shiro的SimpleAuthenticationInfo进行处理)
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
+
+        System.out.println("==========================init hashedCredentialsMatcher");
+
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+        //与本地的md5方法都不一致
+//        System.out.println(MD5Utils.encrypt(MD5Utils.encrypt("123456")));
         return hashedCredentialsMatcher;
     }
+
+
 
     // Filter工厂，设置对应的过滤条件和跳转条件
     @Bean
     ShiroFilterFactoryBean shiroFilterFactoryBean() {
+
+        System.out.println("==========================init shiroFilterFactoryBean");
+
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager());
         Map<String, String> filterMap = new HashMap<String, String>();

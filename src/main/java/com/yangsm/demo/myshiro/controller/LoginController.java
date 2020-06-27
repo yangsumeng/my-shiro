@@ -17,7 +17,7 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public String login() {
-        return "登录页";
+        return "跳转到登录页面-----";
     }
 
     @PostMapping(value = "/login")
